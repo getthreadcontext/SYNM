@@ -114,10 +114,13 @@ app.get('/api/auth/status', (req, res) => {
 })
 
 app.post('/api/auth/init', (req, res) => {
-  if (auth.initialized) return res.json({ ok: true })
-  const k = (req.body?.key || '').toString().trim() || Math.random().toString(36).slice(2)
-  auth = { initialized: true, key: k }
-  res.json({ ok: true, key: k })
+  // For demo, always use a fixed password
+  if (!auth.initialized) {
+    auth = { initialized: true, key: 'demo' }
+  } else if (auth.key !== 'demo') {
+    auth.key = 'demo'
+  }
+  res.json({ ok: true, key: auth.key })
 })
 
 app.get('/api/players', (req, res) => {
