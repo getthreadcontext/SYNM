@@ -20,15 +20,9 @@ export default defineConfig({
     port: 4444,
     // Listen on all interfaces; actual Host header will still be validated below
     host: true,
+    open: false,
     // Allow localhost, LAN access, and any subdomain of captain.dum88.nl
-    allowedHosts: [
-      'localhost',
-      '127.0.0.1',
-      '0.0.0.0',
-      'fastfile.captain.dum88.nl',
-      // Allow any subdomain like *.captain.dum88.nl
-      '.captain.dum88.nl'
-    ],
+    allowedHosts: true,
     // Proxy API calls to the backend on port 4445
     proxy: {
       '/api': {
