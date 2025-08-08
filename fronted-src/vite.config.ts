@@ -27,8 +27,8 @@ export default defineConfig({
     open: false,
     // Allow localhost, LAN access, and any subdomain of captain.dum88.nl
   allowedHosts: true,
-    // Proxy API calls to the backend on port 4445
-    proxy: {
+    // Proxy API calls in dev unless disabled (use PROXY_DISABLE=1 when a reverse proxy handles /api)
+    proxy: process.env.PROXY_DISABLE === '1' ? undefined : {
       '/api': {
         target: process.env.API_TARGET || 'http://localhost:4445',
         changeOrigin: true,
