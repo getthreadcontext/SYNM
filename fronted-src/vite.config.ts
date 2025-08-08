@@ -18,10 +18,13 @@ export default defineConfig({
   },
   server: {
     port: 4444,
-  host: true,
-  allowedHosts: ['gokg8wc44c00w08gg0wgscc0.captain.dum88.nl'],
-    proxy: {
-      '/api': 'http://localhost:4445'
-    }
+    host: '0.0.0.0',
+    allowedHosts: [
+      'fastfile.captain.dum88.nl',
+      'localhost',
+      '127.0.0.1',
+      '0.0.0.0',
+      'gokg8wc44c00w08gg0wgscc0.captain.dum88.nl'
+    ],
   }
 })
