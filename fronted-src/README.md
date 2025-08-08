@@ -2,7 +2,7 @@
 
 - Dev: `npm install` then `npm run dev` (proxy to http://localhost:4444 for /api)
 - Build: `npm run build` (outputs to ../src/main/resources/web for packaging in mod jar)
-- Demo: `npm run demo` starts a mock API on http://localhost:4444 and Vite dev server on http://localhost:5173
+- Demo: `npm run demo` starts a mock API on http://localhost:4445 and Vite dev server on http://localhost:4444
 
 The backend web server should serve `/` from `index.html` in `src/main/resources/web`.
 
@@ -22,7 +22,7 @@ Deploying to Coolify (container)
 	- Serve `npm run build:web` output (fronted-src/dist) using a static site container (e.g., nginx) and proxy `/api` to this service.
 
 Recommended production setup
-- Service A (API): Use the provided Dockerfile to run the API at port 4444.
+- Service A (API): Use the provided Dockerfile to run the API at port 4445.
 - Service B (Static web): An nginx container serving the built SPA. Example `nginx.conf`:
   - Root: `/usr/share/nginx/html`
   - Try files: `try_files $uri /index.html;`

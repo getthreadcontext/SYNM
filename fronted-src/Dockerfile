@@ -16,7 +16,7 @@ COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev || npm install --omit=dev
 # Copy runtime sources
 COPY mock ./mock
-# Expose the mock API port
-EXPOSE 4444
-# Start the mock API (Coolify will map ports as configured)
-CMD ["node", "mock/server.mjs"]
+# Expose the web (4444) and API (4445) ports
+EXPOSE 4444 4445
+# Start both API and Vite dev server via demo script
+CMD ["npm", "run", "demo"]

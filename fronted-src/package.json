@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
   "preview": "vite preview",
-  "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"vite\"",
+  "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"vite --host 0.0.0.0 --port 4444\"",
   "build:web": "vite build --outDir dist",
   "start": "node mock/server.mjs"
   },
@@ -19,7 +19,8 @@
   "react": "^18.3.1",
   "react-dom": "^18.3.1",
   "cors": "^2.8.5",
-  "express": "^4.19.2"
+  "express": "^4.19.2",
+  "concurrently": "^9.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
@@ -27,7 +28,6 @@
     "@vitejs/plugin-react-swc": "^3.7.1",
   "vite-plugin-singlefile": "^2.0.1",
     "typescript": "^5.5.4",
-  "vite": "^5.4.1",
-  "concurrently": "^9.1.0"
+  "vite": "^5.4.1"
   }
 }

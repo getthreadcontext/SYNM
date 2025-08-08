@@ -6,7 +6,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const PORT = 4444
+const PORT = 4445
 
 // In-memory mock data
 let auth = { initialized: false, key: '' }
