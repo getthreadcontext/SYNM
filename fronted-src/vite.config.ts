@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     port: 4444,
   host: true,
-  allowedHosts: true,
+  allowedHosts: ['gokg8wc44c00w08gg0wgscc0.captain.dum88.nl'],
     proxy: {
       '/api': 'http://localhost:4445'
     }
