@@ -17,6 +17,7 @@ Deploying to Coolify (container)
 3. Build settings:
 	- Dockerfile: `fronted-src/Dockerfile`
 	- Exposed port: 4444
+	- Build context: repository root (the Dockerfile already references fronted-src/ paths)
 4. Deploy. Coolify will run `node mock/server.mjs` and expose `/:4444`. The frontend is not served by this container. You can:
 	- Use Vite preview (not ideal for prod) or
 	- Serve `npm run build:web` output (fronted-src/dist) using a static site container (e.g., nginx) and proxy `/api` to this service.
