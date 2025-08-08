@@ -9,6 +9,7 @@
   "preview": "vite preview",
   "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"wait-on http://localhost:4445/api/auth/status && cross-env VITE_DEMO=1 vite\"",
   "demo:server": "cross-env VITE_DEMO=1 PROXY_DISABLE=1 vite",
+  "demo:server:proxy": "cross-env VITE_DEMO=1 API_TARGET=http://127.0.0.1:4445 vite",
   "build:web": "vite build --outDir dist",
   "start": "node mock/server.mjs"
   },
