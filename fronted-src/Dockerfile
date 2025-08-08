@@ -20,8 +20,8 @@ ENV VITE_DEMO=1 \
 # Install dependencies (including dev) because demo uses Vite
 COPY fronted-src/package.json fronted-src/package-lock.json* ./
 RUN npm ci || npm install
-# Copy runtime sources
-COPY fronted-src/mock ./mock
+# Copy runtime sources (include vite.config.ts, index.html, src, mock, etc.)
+COPY fronted-src/. .
 # Expose the web (4444) and API (4445) ports
 EXPOSE 4444 4445
 # Start both API and Vite dev server via demo script (proxy enabled by default)
