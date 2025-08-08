@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
   "preview": "vite preview",
-  "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"wait-on http://localhost:4445/api/auth/status && vite\"",
+  "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"wait-on http://localhost:4445/api/auth/status && cross-env VITE_DEMO=1 vite\"",
   "build:web": "vite build --outDir dist",
   "start": "node mock/server.mjs"
   },
@@ -29,6 +29,7 @@
   "vite-plugin-singlefile": "^2.0.1",
     "typescript": "^5.5.4",
   "vite": "^5.4.1",
+  "cross-env": "^7.0.3",
   "wait-on": "^7.0.1"
   }
 }

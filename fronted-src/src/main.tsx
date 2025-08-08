@@ -10,10 +10,17 @@ import App from './ui/App'
 const API_BASE = typeof window !== 'undefined' && window.location.protocol === 'file:'
   ? 'http://localhost:4444'
   : ''
+// Demo mode flag from Vite env
+const DEMO = (import.meta as any).env?.VITE_DEMO === '1' || (import.meta as any).env?.VITE_DEMO === 'true'
 
 // Simple auth bootstrapping: if API key not initialized, allow user to set a custom key or auto-generate.
 async function ensureAuthKey() {
   try {
+    if (DEMO) {
+      // In demo, just set the cookie to a known value and skip prompts
+      document.cookie = `synm_key=demo; path=/; SameSite=Lax`
+      return
+    }
     const status = await fetch(`${API_BASE}/api/auth/status`).then(r => r.json()).catch(() => ({ initialized: false }))
     const cookies = Object.fromEntries(document.cookie.split(';').map(c => c.trim()).filter(Boolean).map(c => c.split('=')))
     if (!status.initialized) {

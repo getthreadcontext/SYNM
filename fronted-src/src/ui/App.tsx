@@ -93,6 +93,7 @@ const EFFECT_OPTIONS = [
 const API_BASE = typeof window !== 'undefined' && window.location.protocol === 'file:'
   ? 'http://localhost:4444'
   : ''
+const DEMO = (import.meta as any).env?.VITE_DEMO === '1' || (import.meta as any).env?.VITE_DEMO === 'true'
 
 const getAuthKey = () => {
   try {
@@ -104,12 +105,12 @@ const getAuthKey = () => {
 const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   const doFetch = async (): Promise<Response> => {
     const headers: Record<string, string> = { ...(init?.headers as any) }
-    const key = getAuthKey()
+    const key = DEMO ? 'demo' : getAuthKey()
     if (key) headers['X-Auth-Key'] = key
     return fetch(`${API_BASE}${path}`, { ...init, headers })
   }
   let res = await doFetch()
-  if (res.status === 401) {
+  if (res.status === 401 && !DEMO) {
     // Prompt for key again and retry once
     const k = window.prompt('Unauthorized. Enter SynM API key (see synm_api_key.txt):')
     if (k) {
