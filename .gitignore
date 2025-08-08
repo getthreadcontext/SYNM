@@ -33,8 +33,8 @@ bin/
 run/
 # Node.js / Frontend
 node_modules/
-frontend-src/node_modules/
-frontend-src/dist/
+fronted-src/node_modules/
+fronted-src/dist/
 
 # Environment files
 .env

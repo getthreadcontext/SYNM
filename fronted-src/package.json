@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+  "preview": "vite preview",
+  "demo": "concurrently -k -n api,web -c yellow,cyan \"node mock/server.mjs\" \"vite\""
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
@@ -22,6 +23,9 @@
     "@vitejs/plugin-react-swc": "^3.7.1",
   "vite-plugin-singlefile": "^2.0.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+  "vite": "^5.4.1",
+  "concurrently": "^9.1.0",
+  "cors": "^2.8.5",
+  "express": "^4.19.2"
   }
 }
