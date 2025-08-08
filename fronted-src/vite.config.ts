@@ -1,4 +1,7 @@
 import { defineConfig } from 'vite'
+// Minimal ambient declaration so TS doesn't complain about process.env in this config
+// (Vite runs this in Node regardless of TS types)
+declare const process: { env: Record<string, string | undefined> }
 import react from '@vitejs/plugin-react-swc'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
@@ -27,7 +30,7 @@ export default defineConfig({
     // Proxy API calls to the backend on port 4445
     proxy: {
       '/api': {
-        target: 'http://localhost:4445',
+        target: process.env.API_TARGET || 'http://localhost:4445',
         changeOrigin: true,
         secure: false,
         // If your backend doesn't include the /api prefix, uncomment the next line
