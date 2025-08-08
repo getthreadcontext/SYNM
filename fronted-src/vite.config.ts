@@ -20,11 +20,18 @@ export default defineConfig({
     }
   },
   server: {
-    port: 4444,
+    port: Number(process.env.PORT) || 4444,
     // Listen on all interfaces; actual Host header will still be validated below
     host: true,
   strictPort: true,
     open: false,
+    // When running behind HTTPS reverse proxies, HMR might need explicit settings
+    hmr: {
+      clientPort: process.env.HMR_CLIENT_PORT ? Number(process.env.HMR_CLIENT_PORT) : undefined,
+      protocol: process.env.HMR_PROTOCOL as 'ws' | 'wss' | undefined,
+      host: process.env.HMR_HOST || undefined,
+    },
+    origin: process.env.PUBLIC_URL || undefined,
     // Allow localhost, LAN access, and any subdomain of captain.dum88.nl
   allowedHosts: true,
     // Proxy API calls in dev unless disabled (use PROXY_DISABLE=1 when a reverse proxy handles /api)
@@ -40,7 +47,8 @@ export default defineConfig({
   },
   // Ensure "vite preview" uses the same host checks when testing builds
   preview: {
-    host: true,
+  host: true,
+  port: Number(process.env.PORT) || 4444,
   allowedHosts: true,
   }
 })

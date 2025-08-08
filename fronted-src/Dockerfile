@@ -12,6 +12,11 @@ RUN npm run build:web || true
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=development
+# Defaults suitable for Coolify
+ENV VITE_DEMO=1 \
+	PORT=4444 \
+	API_TARGET=http://127.0.0.1:4445 \
+	PROXY_DISABLE=0
 # Install dependencies (including dev) because demo uses Vite
 COPY fronted-src/package.json fronted-src/package-lock.json* ./
 RUN npm ci || npm install
@@ -19,5 +24,5 @@ RUN npm ci || npm install
 COPY fronted-src/mock ./mock
 # Expose the web (4444) and API (4445) ports
 EXPOSE 4444 4445
-# Start both API and Vite dev server via demo script
-CMD ["npm", "run", "demo"]
+# Start both API and Vite dev server via demo script (proxy enabled by default)
+CMD ["sh", "-lc", "npm run demo"]
