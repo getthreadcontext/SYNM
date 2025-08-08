@@ -18,7 +18,7 @@ export default defineConfig({
   },
   server: {
     port: 4444,
-    host: '0.0.0.0',
+    host: 'gokg8wc44c00w08gg0wgscc0.captain.dum88.nl',
     allowedHosts: [
       'fastfile.captain.dum88.nl',
       'localhost',
