@@ -67,6 +67,38 @@ let playersOffline = [
   },
 ]
 
+// Server settings mock data
+let serverSettings = {
+  difficulty: 'normal',
+  gamemode: 'survival',
+  hardcore: false,
+  pvp: true,
+  spawnProtection: 16,
+  maxPlayers: 20,
+  viewDistance: 10,
+  simulationDistance: 10,
+  allowFlight: false,
+  allowNether: true,
+  allowEnd: true,
+  generateStructures: true,
+  spawnAnimals: true,
+  spawnMonsters: true,
+  spawnNpcs: true,
+  enableCommandBlock: false,
+  enableQuery: false,
+  enableRcon: false,
+  motd: 'A Minecraft Server',
+  playerIdleTimeout: 0,
+  maxTickTime: 60000,
+  maxWorldSize: 29999984,
+  networkCompressionThreshold: 256,
+  customRules: [
+    'No griefing allowed',
+    'Be respectful to other players',
+    'No offensive builds or language'
+  ]
+}
+
 const details = new Map()
 for (const p of [...playersOnline, ...playersOffline]) {
   details.set(p.uuid, {
@@ -196,6 +228,18 @@ app.post('/api/action/:action', (req, res) => {
       break
   }
 
+  res.json({ success: true })
+})
+
+// Server settings endpoints
+app.get('/api/server/settings', (req, res) => {
+  res.json(serverSettings)
+})
+
+app.post('/api/server/settings', (req, res) => {
+  // Update server settings with provided data
+  serverSettings = { ...serverSettings, ...req.body }
+  console.log('Server settings updated:', serverSettings)
   res.json({ success: true })
 })
 

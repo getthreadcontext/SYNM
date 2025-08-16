@@ -19,8 +19,10 @@ import {
   Divider,
   Grid,
   Container,
+  NavLink,
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
+import ServerSettings from './ServerSettings'
 
 // Minimal shapes matching backend JSON
 interface PlayerRow {
@@ -143,6 +145,9 @@ async function postAction(action: string, params: Record<string, string>): Promi
 }
 
 export default function App() {
+  // Navigation state
+  const [currentPage, setCurrentPage] = useState<'players' | 'settings'>('players')
+  
   // Players list
   const [online, setOnline] = useState<PlayerRow[]>([])
   const [offline, setOffline] = useState<PlayerRow[]>([])
@@ -268,63 +273,86 @@ export default function App() {
         </Group>
       </AppShell.Header>
 
-      {/* Sidebar: Players */}
+      {/* Sidebar: Navigation + Players */}
       <AppShell.Navbar p="xs">
-        <Tabs defaultValue="online">
-          <Tabs.List>
-            <Tabs.Tab value="online">Online ({online.length})</Tabs.Tab>
-            <Tabs.Tab value="offline">Offline ({offline.length})</Tabs.Tab>
-          </Tabs.List>
+        <Stack gap="sm">
+          {/* Navigation */}
+          <Card withBorder p="xs">
+            <Stack gap="xs">
+              <NavLink
+                label="Player Management"
+                active={currentPage === 'players'}
+                onClick={() => setCurrentPage('players')}
+              />
+              <NavLink
+                label="Server Settings"
+                active={currentPage === 'settings'}
+                onClick={() => setCurrentPage('settings')}
+              />
+            </Stack>
+          </Card>
 
-          <Tabs.Panel value="online">
-            <ScrollArea h="calc(100vh - 140px)">
-              <Stack gap="xs" mt="sm">
-                {online.map((p) => (
-                  <Card key={p.uuid} withBorder radius="md" onClick={() => setSelected(p.uuid)} style={{ cursor: 'pointer', borderColor: selected === p.uuid ? 'var(--mantine-color-blue-5)' : undefined }}>
-                    <Group justify="space-between" align="center">
-                      <Group>
-                        <Badge color="green" variant="filled" radius="xs" mr="xs">●</Badge>
-                        <Text fw={600}>{p.username}</Text>
-                      </Group>
-                      <Badge variant="light">{p.gameMode}</Badge>
-                    </Group>
-                    <Group mt={6} gap="sm">
-                      <Text size="sm">HP</Text>
-                      <Progress value={Math.min(100, (p.health / (p.maxHealth || 20)) * 100)} w={160} />
-                      <Text size="sm">🍗 {p.foodLevel}</Text>
-                    </Group>
-                  </Card>
-                ))}
-                {online.length === 0 && <Text c="dimmed" ta="center" mt="sm">No players online</Text>}
-              </Stack>
-            </ScrollArea>
-          </Tabs.Panel>
+          {/* Players list - only show on players page */}
+          {currentPage === 'players' && (
+            <Tabs defaultValue="online">
+              <Tabs.List>
+                <Tabs.Tab value="online">Online ({online.length})</Tabs.Tab>
+                <Tabs.Tab value="offline">Offline ({offline.length})</Tabs.Tab>
+              </Tabs.List>
 
-          <Tabs.Panel value="offline">
-            <ScrollArea h="calc(100vh - 140px)">
-              <Stack gap="xs" mt="sm">
-                {offline.map((p) => (
-                  <Card key={p.uuid} withBorder radius="md" onClick={() => setSelected(p.uuid)} style={{ cursor: 'pointer', borderColor: selected === p.uuid ? 'var(--mantine-color-blue-5)' : undefined }}>
-                    <Group justify="space-between" align="center">
-                      <Group>
-                        <Badge color="gray" variant="filled" radius="xs" mr="xs">●</Badge>
-                        <Text fw={600}>{p.username}</Text>
-                      </Group>
-                      <Badge variant="light">last seen</Badge>
-                    </Group>
-                    <Text size="xs" c="dimmed" mt={6}>Playtime: {p.totalPlayTimeFormatted || '—'}</Text>
-                  </Card>
-                ))}
-                {offline.length === 0 && <Text c="dimmed" ta="center" mt="sm">No offline players</Text>}
-              </Stack>
-            </ScrollArea>
-          </Tabs.Panel>
-        </Tabs>
+              <Tabs.Panel value="online">
+                <ScrollArea h="calc(100vh - 260px)">
+                  <Stack gap="xs" mt="sm">
+                    {online.map((p) => (
+                      <Card key={p.uuid} withBorder radius="md" onClick={() => setSelected(p.uuid)} style={{ cursor: 'pointer', borderColor: selected === p.uuid ? 'var(--mantine-color-blue-5)' : undefined }}>
+                        <Group justify="space-between" align="center">
+                          <Group>
+                            <Badge color="green" variant="filled" radius="xs" mr="xs">●</Badge>
+                            <Text fw={600}>{p.username}</Text>
+                          </Group>
+                          <Badge variant="light">{p.gameMode}</Badge>
+                        </Group>
+                        <Group mt={6} gap="sm">
+                          <Text size="sm">HP</Text>
+                          <Progress value={Math.min(100, (p.health / (p.maxHealth || 20)) * 100)} w={160} />
+                          <Text size="sm">🍗 {p.foodLevel}</Text>
+                        </Group>
+                      </Card>
+                    ))}
+                    {online.length === 0 && <Text c="dimmed" ta="center" mt="sm">No players online</Text>}
+                  </Stack>
+                </ScrollArea>
+              </Tabs.Panel>
+
+              <Tabs.Panel value="offline">
+                <ScrollArea h="calc(100vh - 260px)">
+                  <Stack gap="xs" mt="sm">
+                    {offline.map((p) => (
+                      <Card key={p.uuid} withBorder radius="md" onClick={() => setSelected(p.uuid)} style={{ cursor: 'pointer', borderColor: selected === p.uuid ? 'var(--mantine-color-blue-5)' : undefined }}>
+                        <Group justify="space-between" align="center">
+                          <Group>
+                            <Badge color="gray" variant="filled" radius="xs" mr="xs">●</Badge>
+                            <Text fw={600}>{p.username}</Text>
+                          </Group>
+                          <Badge variant="light">last seen</Badge>
+                        </Group>
+                        <Text size="xs" c="dimmed" mt={6}>Playtime: {p.totalPlayTimeFormatted || '—'}</Text>
+                      </Card>
+                    ))}
+                    {offline.length === 0 && <Text c="dimmed" ta="center" mt="sm">No offline players</Text>}
+                  </Stack>
+                </ScrollArea>
+              </Tabs.Panel>
+            </Tabs>
+          )}
+        </Stack>
       </AppShell.Navbar>
 
       {/* Main content */}
       <AppShell.Main>
-        {!selected && (
+        {currentPage === 'settings' && <ServerSettings />}
+        
+        {currentPage === 'players' && !selected && (
           <Container size="lg">
             <Card withBorder radius="md" p="lg">
               <Title order={4}>Select a player</Title>
@@ -333,7 +361,7 @@ export default function App() {
           </Container>
         )}
 
-        {selected && (
+        {currentPage === 'players' && selected && (
           <Container size="lg">
             <Stack gap="md">
               <Group align="center" justify="space-between">
